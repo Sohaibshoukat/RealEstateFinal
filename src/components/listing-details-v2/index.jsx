@@ -341,8 +341,8 @@ const ListingDynamicDetailsV2 = (props) => {
             {/* End details content .col-lg-8 */}
 
             <div className="col-lg-4 col-xl-4">
-              <div style={{ position: "sticky", top: "14.5%" }}>
-                {developer.map((item) => {
+              <div style={{ position: "sticky", top: "3%" }}>
+                {/* {developer.map((item) => {
                   if (item.DevName === property.projectDeveloper) {
                     return (
                       <Link href={`/agency-details/${item._id}`}>
@@ -361,7 +361,7 @@ const ListingDynamicDetailsV2 = (props) => {
                       </Link>
                     );
                   }
-                })}
+                })} */}
                 {isSecondSchedulerVisible&&
                 <div 
                 className={`${style.SideBar_Schedule_Tour} ${isSecondSchedulerVisible ? "show" : ""}`}>

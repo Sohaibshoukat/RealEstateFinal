@@ -1,5 +1,5 @@
 import Router from "next/router";
-import style from "../../home-4/HomeStyling.module.css"
+import style from "../../home-4/HomeStyling.module.css";
 import {
   addAreaMax,
   addAreaMin,
@@ -23,16 +23,15 @@ import {
   addDeveloper,
   addfurnishing,
   resetAmenities,
-} from"../../../features/properties/propertiesSlice";
+} from "../../../features/properties/propertiesSlice";
 import PricingRangeSlider from "../../common/PricingRangeSlider";
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 import GlobalSelectBox from "../../common/GlobalSelectBox";
-import {useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 
 const GlobalFilter = ({ className = "" }) => {
-
   const { location } = useSelector((state) => state.properties);
 
   //dispatching
@@ -40,10 +39,10 @@ const GlobalFilter = ({ className = "" }) => {
   dispatch(addPrice({ min: 10000, max: 20000 }));
 
   //Google Api Key loader
-  const {isLoaded}=useJsApiLoader({
-    googleMapsApiKey:"AIzaSyB4btr2-qapJbexdgT2sIajOY9adryN6Ns",
-    libraries:['places'],
-  })
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyB4btr2-qapJbexdgT2sIajOY9adryN6Ns",
+    libraries: ["places"],
+  });
   // const autocomplete = new google.maps.places.Autocomplete(input, options);
 
   // submit handler
@@ -73,20 +72,22 @@ const GlobalFilter = ({ className = "" }) => {
     dispatch(addfurnishing(""));
   };
 
-
   return (
     <div className={`home1-advnc-search ${className}`}>
-      <ul className="h1ads_1st_list mb0">  
+      <ul className="h1ads_1st_list mb0">
         <li className="list-inline-item">
           <div className="form-group">
-          {isLoaded&&<Autocomplete>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Location"
-              value={location}
-              onChange={(e) => dispatch(addLocation(e.target.value))}
-            /></Autocomplete>}
+            {isLoaded && (
+              <Autocomplete>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Location"
+                  value={location}
+                  onChange={(e) => dispatch(addLocation(e.target.value))}
+                />
+              </Autocomplete>
+            )}
           </div>
         </li>
         {/* End li */}
@@ -95,8 +96,8 @@ const GlobalFilter = ({ className = "" }) => {
           <div className="search_option_two">
             <div className="candidate_revew_select">
               <select
-              className="selectpicker w100 form-select show-tick"
-              onChange={(e) => dispatch(addPropertyType(e.target.value))}
+                className="selectpicker  form-select show-tick"
+                onChange={(e) => dispatch(addPropertyType(e.target.value))}
               >
                 <option value="">Property Type</option>
                 <option>Commercial</option>
@@ -113,8 +114,8 @@ const GlobalFilter = ({ className = "" }) => {
           <div className="search_option_two">
             <div className="candidate_revew_select">
               <select
-              className="selectpicker w100 form-select show-tick"
-              onChange={(e) => dispatch(addaffordability(e.target.value))}
+                className="selectpicker  form-select show-tick"
+                onChange={(e) => dispatch(addaffordability(e.target.value))}
               >
                 <option value="">Affordability</option>
                 <option>Affordable</option>
@@ -130,8 +131,8 @@ const GlobalFilter = ({ className = "" }) => {
           <div className="search_option_two">
             <div className="candidate_revew_select">
               <select
-              className="selectpicker w100 form-select show-tick"
-              onChange={(e) => dispatch(addStatus(e.target.value))}
+                className="selectpicker  form-select show-tick"
+                onChange={(e) => dispatch(addStatus(e.target.value))}
               >
                 <option value="">Property Status</option>
                 <option value="Under Construction">Under Construction</option>
@@ -143,7 +144,6 @@ const GlobalFilter = ({ className = "" }) => {
           </div>
         </li>
         {/*End li*/}
-
         <li className="list-inline-item">
           <div className="small_dropdown2">
             <div
@@ -167,10 +167,11 @@ const GlobalFilter = ({ className = "" }) => {
         </li>
         {/* End li */}
 
-        <li className={`custome_fields_520 list-inline-item ${style.Advance_bg}`}>
+        <li
+          className={`custome_fields_520 list-inline-item ${style.Advance_bg}`}
+        >
           <div className={`navbered ${style.Advance_bg}`}>
             <div className={`mega-dropdown ${style.Advance_bg}`}>
-            
               <span
                 className="dropbtn"
                 data-bs-toggle="dropdown"
@@ -180,8 +181,9 @@ const GlobalFilter = ({ className = "" }) => {
                 Advanced <i className="flaticon-more pl10 flr-520"></i>
               </span>
 
-              <div className={`dropdown-content dropdown-menu ${style.Advance_bg}`}>
-
+              <div
+                className={`dropdown-content dropdown-menu ${style.Advance_bg}`}
+              >
                 <div className="row p15 pt0-xsd">
                   <div className="col-lg-12 col-xl-12">
                     <ul className="apeartment_area_list mb0">
@@ -205,7 +207,6 @@ const GlobalFilter = ({ className = "" }) => {
           </div>
         </li>
         {/* End li */}
-
 
         <li className="list-inline-item">
           <div className="search_option_button">

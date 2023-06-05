@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from "react";
 import Ratings from "../blog-details/Ratings";
 import ReviewBox from "../blog-details/ReviewBox";
 import Attachments from "../common/listing-details/Attachments";
@@ -9,82 +10,112 @@ import PropertyItem from "../common/listing-details/PropertyItem";
 import PropertyLocation from "../common/listing-details/PropertyLocation";
 import NearbyProperties from "./NearBySlider";
 import PaymentPlan from "../payment-plan";
-// import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import DecisionDriver from "./DecisionDriver";
 import Rating from "./Rating";
+import style from "./navbarPopUp.module.css";
+import Gifs from "./Gifs";
 
 const DetailsContent = (props) => {
-  // const history = useNavigate();
+  const observer = useRef(null);
 
-  // useEffect(() => {
-  //   // const handleScroll = () => {
-  //   //   const scrollY = window.scrollY;
-  //   //   const element = document.getElementById("about");
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px 0px -100px 0px",
+      threshold: 0.5,
+    };
 
-  //   //   if (element && scrollY >= element.offsetTop) {
-  //   //     history(`/your-url/#${element.id}`);
-  //   //   }
-  //   // };
+    const handleIntersect = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          if (id) {
+            window.history.replaceState(null, null, `#${id}`);
+          }
+        }
+      });
+    };
 
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [history]);
+    observer.current = new IntersectionObserver(handleIntersect, options);
+    const targetElements = document.querySelectorAll(".scroll-section-link");
+
+    targetElements.forEach((el) => {
+      observer.current.observe(el);
+    });
+
+    return () => {
+      observer.current.disconnect();
+    };
+  }, []);
 
   return (
     <>
-      <div className="listing_single_description">
+      <div className={style.Nav_design}>
+        <div className={style.Detail_nav}>
+          <a href="#about">
+            <button className="btn btn-thm">About</button>
+          </a>
+          <a href="#price-list">
+            <button className="btn btn-thm">Price List</button>
+          </a>
+          <a href="#floor-plan">
+            <button className="btn btn-thm">Floor Plan</button>
+          </a>
+          <a href="#amenities">
+            <button className="btn btn-thm">Amenities</button>
+          </a>
+          <a href="#attachment">
+            <button className="btn btn-thm">Attachments</button>
+          </a>
+          <a href="#location">
+            <button className="btn btn-thm">Location</button>
+          </a>
+        </div>
+      </div>
+      <div id="about" className="listing_single_description scroll-section-link">
         <div className="lsd_list">
           <PropertyItem property={props.property} />
         </div>
         {/* End .lsd_list */}
 
-        <h3 className="mb30 scroll-section">About</h3>
+        <h2 className="mb30 scroll-section">About</h2>
         <PropertyDescriptions property={props.property} />
       </div>
       {/* End .listing_single_description */}
 
-      <div className="property_attachment_area">
-        <h4 className="mb30">Property Attachments</h4>
+      {/* payment Integration */}
+      <div id="price-list" className="property_attachment_area  scroll-section-link">
+        <PaymentPlan property={props.property} />
+      </div>
+      {/* End payment Integration */}
+
+      <div id="floor-plan" className="application_statics mt30 scroll-section-link">
+        <h2 className="mb30">Floor plans</h2>
+        <div className="faq_according style2">
+          <FloorPlans property={props.property} />
+        </div>
+      </div>
+      {/* End .floor_plane */}
+
+      <div id="amenities" className="application_statics mt30 scroll-section-link">
+        <div className="row">
+          <div className="col-lg-12">
+            <h2 className="mb10">Amenities</h2>
+          </div>
+          <PropertyFeatures property={props.property} />
+        </div>
+      </div>
+      {/* End .feature_area */}
+
+      <div id="attachment" className="property_attachment_area mt30 scroll-section-link">
+        <h2 className="mb30">Property Attachments</h2>
         <div className="iba_container style2">
           <Attachments property={props.property} />
         </div>
       </div>
       {/* End .property_attachment_area */}
 
-      {/* payment Integration */}
-
-      <div className="property_attachment_area">
-        <PaymentPlan property={props.property} />
-      </div>
-
-      {/* End payment Integration */}
-
-      <div className="application_statics mt30">
-        <div className="row">
-          <div className="col-lg-12">
-            <h2 className="mb10">Amenities</h2>
-          </div>
-          {/* End .col */}
-
-          <PropertyFeatures property={props.property} />
-        </div>
-      </div>
-      {/* End .feature_area */}
-
-      <div className="application_statics mt30">
-        <div className="row">
-          <div className="col-lg-12">
-            <h2>Nearby Properties</h2>
-            <p>Within 50 Miles OF {props.property.project_title}</p>
-          </div>
-          <NearbyProperties Located={props.property.locationCoordinates} />
-        </div>
-      </div>
-
-      <div className="application_statics mt30">
+      <div id="location" className="application_statics mt30 scroll-section-link">
         <h3 className="mb30">
           Location{" "}
           <small className="float-end">
@@ -98,12 +129,14 @@ const DetailsContent = (props) => {
       {/* End .location_area */}
 
       <div className="application_statics mt30">
-        <h4 className="mb30">Floor plans</h4>
-        <div className="faq_according style2">
-          <FloorPlans property={props.property} />
+        <div className="row">
+          <div className="col-lg-12">
+            <h2>Nearby Properties</h2>
+            <p>Within 50 Miles OF {props.property.project_title}</p>
+          </div>
+          <NearbyProperties Located={props.property.locationCoordinates} />
         </div>
       </div>
-      {/* End .floor_plane */}
 
       <div className="application_statics mt30">
         <div className="row">
@@ -133,6 +166,13 @@ const DetailsContent = (props) => {
           {/* End .col */}
 
           <PropertySpecification property={props.property} />
+        </div>
+      </div>
+      {/* End .feature_area */}
+
+      <div className="mt30">
+        <div className="row">
+          <Gifs/>
         </div>
       </div>
       {/* End .feature_area */}

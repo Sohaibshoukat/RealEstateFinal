@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/listing-map-v4": "pages/listing-map-v4.js",
-  "/listing-details-v2/[id]": "pages/listing-details-v2/[id].js",
-  "/404": "pages/404.js"
+  "/api/mainproject_get": "pages/api/mainproject_get.js",
+  "/listing-map-v4": "pages/listing-map-v4.js"
 }
