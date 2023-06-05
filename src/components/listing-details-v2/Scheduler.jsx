@@ -2,15 +2,20 @@ import React, { useRef } from "react";
 import style from "./navbarPopUp.module.css";
 import Slider from "react-slick";
 import { useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
-export default function Scheduler({sider,title}) {
+export default function Scheduler({ sider, title }) {
   const [TourDate, setTourDate] = useState(null);
   const [TourTime, setTourTime] = useState(null);
-  const [name, setname] = useState(null)
-  const [Email, setEmail] = useState(null)
-  const [PhoneNu, setPhoneNu] = useState(null)
-  const [Message, setMessage] = useState(null)
+  const [name, setname] = useState(null);
+  const [Email, setEmail] = useState(null);
+  const [PhoneNu, setPhoneNu] = useState(null);
+  const [Message, setMessage] = useState(null);
 
   const [activeIndex, setActiveIndex] = useState(-1);
   const [activeTimeIndex, setActiveTimeIndex] = useState(-1);
@@ -27,25 +32,31 @@ export default function Scheduler({sider,title}) {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/send-email', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/send-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title , name, Email,PhoneNu, Message,TourTime,TourDate }),
+        body: JSON.stringify({
+          title,
+          name,
+          Email,
+          PhoneNu,
+          Message,
+          TourTime,
+          TourDate,
+        }),
       });
 
       if (response.ok) {
-        alert('Email sent successfully');
+        alert("Email sent successfully");
       } else {
-        throw new Error('Error sending email');
+        throw new Error("Error sending email");
       }
     } catch (error) {
       console.error(error);
-      alert('Error sending email');
+      alert("Error sending email");
     }
-
-
   };
 
   const handleSelectDate = (date, index) => {
@@ -154,6 +165,18 @@ export default function Scheduler({sider,title}) {
     ],
   };
 
+  const URL = window.location.href;
+
+  const handleCopyClick = async () => {
+    try {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      console.log("URL copied to clipboard:", url);
+    } catch (error) {
+      console.error("Failed to copy URL to clipboard:", error);
+    }
+  };
+
   return (
     <>
       <div className="tour_data">
@@ -162,9 +185,7 @@ export default function Scheduler({sider,title}) {
       </div>
       <div
         className={`${style.flxing_schduling}`}
-        style={
-          sider ? { flexDirection: "column", maxWidth: "350px" } : {}
-        }
+        style={sider ? { flexDirection: "column", maxWidth: "350px" } : {}}
       >
         <div className={`${style.Date_picker}`}>
           <Slider {...settings} arrows={true}>
@@ -245,7 +266,9 @@ export default function Scheduler({sider,title}) {
                               id="Name"
                               name="user_name"
                               placeholder="name@example.com"
-                              onChange={(e)=>{setname(e.target.value)}}
+                              onChange={(e) => {
+                                setname(e.target.value);
+                              }}
                             />
                             <label for="Name">Name</label>
                           </div>
@@ -257,7 +280,9 @@ export default function Scheduler({sider,title}) {
                               id="Email"
                               name="user_email"
                               placeholder="name@example.com"
-                              onChange={(e)=>{setEmail(e.target.value)}}
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                              }}
                             />
                             <label for="Email">Email address</label>
                           </div>
@@ -269,7 +294,9 @@ export default function Scheduler({sider,title}) {
                               id="phoneNo"
                               name="user_Nu"
                               placeholder="Password"
-                              onChange={(e)=>{setPhoneNu(e.target.value)}}
+                              onChange={(e) => {
+                                setPhoneNu(e.target.value);
+                              }}
                             />
                             <label for="phoneNo">Phone No</label>
                           </div>
@@ -282,16 +309,16 @@ export default function Scheduler({sider,title}) {
                               id="Note"
                               name="note"
                               placeholder="Password"
-                              onChange={(e)=>{setMessage(e.target.value)}}
+                              onChange={(e) => {
+                                setMessage(e.target.value);
+                              }}
                             />
                             <label for="Note">Add Note</label>
                           </div>
                         </div>
                       </form>
                     </div>
-                    <div
-                      className={style.Btn_next}
-                      onClick={Schedule_Tour}>
+                    <div className={style.Btn_next} onClick={Schedule_Tour}>
                       <button className={`btn btn-thm`} onClick={Schedule_Tour}>
                         Schedule Meeting
                       </button>
@@ -371,7 +398,37 @@ export default function Scheduler({sider,title}) {
           <div className={`btn btn-thm ${style.btn_style}`}>
             Add To Dashboard
           </div>
+          <div className={style.btn_group}>
+            <button className="btn btn-thm w-100">Contact Agent</button>
+            <button className="btn btn-thm w-100">Whatsapp</button>
+          </div>
         </div>
+
+        {sider&&<div className={style.sharing_items}>
+          <div className={style.sharing_item} onClick={handleCopyClick}>
+            <img src="/assets/images/SocialSharing/copy.png" alt="" />
+          </div>
+          <WhatsappShareButton url={URL}>
+            <div className={style.sharing_item}>
+              <img src="/assets/images/SocialSharing/whatsapp.png" alt="" />
+            </div>
+          </WhatsappShareButton>
+          <FacebookShareButton url={URL}>
+            <div className={style.sharing_item}>
+              <img src="/assets/images/SocialSharing/facebook.png" alt="" />
+            </div>
+          </FacebookShareButton>
+          <TwitterShareButton url={URL}>
+            <div className={style.sharing_item}>
+              <img src="/assets/images/SocialSharing/twitter.png" alt="" />
+            </div>
+          </TwitterShareButton>
+          <EmailShareButton url={URL}>
+            <div className={style.sharing_item}>
+              <img src="/assets/images/SocialSharing/gmail.png" alt="" />
+            </div>
+          </EmailShareButton>
+        </div>}
       </div>
     </>
   );

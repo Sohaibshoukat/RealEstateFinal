@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useContext } from "react";
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
+import InputRange from "react-input-range";
+import "react-input-range/lib/css/index.css";
 import VillaContext from "../../Context/TownVilla/TownVillaContext";
 
 const FeaturedProperties = (props) => {
@@ -78,36 +80,24 @@ const FeaturedProperties = (props) => {
     ],
   };
 
-  const SliderRange = ({ value, onChange }) => {
-    const handleChange = (e) => {
-      onChange(parseInt(e.target.value));
-    };
-
-    return (
-      <div className="slider-range">
-        <p htmlFor="range">Range (km): {value}</p>
-        <input
-          type="range"
-          id="range"
-          min="5"
-          max="50"
-          step="5"
-          value={value}
-          onChange={handleChange}
-        />
-      </div>
-    );
-  };
-
   return (
     <>
-      <SliderRange value={range} onChange={setRange} />
+      <div className="slider-range" style={{ maxWidth: "230px" }}>
+        <p htmlFor="range">Range (km): {range}</p>
+        <InputRange
+          formatLabel={() => ``}
+          maxValue={50}
+          minValue={5}
+          value={range}
+          onChange={(value) => setRange(value)}
+        />
+      </div>
 
       {villa.length > 0 ? (
         <h2>No Project Nearby</h2>
       ) : (
         <Slider {...settings} arrows={true}>
-          {villa.map((item) => (
+          {Properties.map((item) => (
             <div className="item" key={item.id}>
               <div className="feat_property home3">
                 <div className="thumb">
